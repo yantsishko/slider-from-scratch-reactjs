@@ -5,13 +5,14 @@ import { getImages } from "../../../imagesApi";
 import Arrows from "./components/Controls/Arrows";
 import Dots from "./components/Controls/Dots";
 
-import SlidesList from "./components/SlidesList";
+import Slide from "./components/Slide";
 
 export const SliderContext = createContext();
 
 const Slider = function ({ width, height, autoPlay, autoPlayTime }) {
   const [items, setItems] = useState([]);
   const [slide, setSlide] = useState(0);
+  const [animation, setAnimation] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
@@ -21,7 +22,23 @@ const Slider = function ({ width, height, autoPlay, autoPlayTime }) {
     loadData();
   }, []);
 
+  const preloadImages = () => {
+    const prevItemIndex = slide - 1 < 0 ? items.length - 1 : slide - 1;
+    const nextItemIndex = (slide + 1) % items.length;
+
+    new Image().src = items[slide].url;
+    new Image().src = items[prevItemIndex].url;
+    new Image().src = items[nextItemIndex].url;
+  }
+
+  useEffect(() => {
+    if (items.length) {
+      preloadImages();
+    }
+  }, [slide, items])
+
   const changeSlide = (direction = 1) => {
+    setAnimation(false);
     let slideNumber = 0;
 
     if (slide + direction < 0) {
@@ -31,10 +48,27 @@ const Slider = function ({ width, height, autoPlay, autoPlayTime }) {
     }
 
     setSlide(slideNumber);
+
+    const timeout = setTimeout(() => {
+      setAnimation(true);
+    }, 0);
+
+    return () => {
+      clearTimeout(timeout)
+    }
   };
 
   const goToSlide = (number) => {
+    setAnimation(false);
     setSlide(number % items.length);
+
+    const timeout = setTimeout(() => {
+      setAnimation(true);
+    }, 0);
+
+    return () => {
+      clearTimeout(timeout)
+    }
   };
 
   useEffect(() => {
@@ -57,11 +91,14 @@ const Slider = function ({ width, height, autoPlay, autoPlayTime }) {
           changeSlide,
           slidesCount: items.length,
           slideNumber: slide,
-          items,
         }}
       >
         <Arrows />
-        <SlidesList />
+        {
+          items.length && (
+            <Slide data={items[slide]} animation={animation} />
+          )
+        }
         <Dots />
       </SliderContext.Provider>
     </div>

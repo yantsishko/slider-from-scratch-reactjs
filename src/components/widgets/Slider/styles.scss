@@ -2,28 +2,30 @@
   overflow: hidden;
   position: relative;
 
-  & .slide-list {
-    display: flex;
-    height: 100%;
-    transition: transform 0.5s ease-in-out;
-    width: 100%;
+  & .slide {
+    flex: 1 0 100%;
+    position: relative;
 
-    & .slide {
-      flex: 1 0 100%;
-      position: relative;
+    &.fadeInAnimation {
+      animation: fadeIn 1.5s;
+    }
 
-      & .slide-image {
-        display: flex;
-        margin: 0 auto;
-        max-height: 300px;
-        width: 100%;
-        object-fit: contain;
-      }
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
 
-      & .slide-title {
-        text-align: center;
-        margin-top: 10px;
-      }
+    & .slide-image {
+      display: flex;
+      margin: 0 auto;
+      max-height: 300px;
+      width: 100%;
+      object-fit: contain;
+    }
+
+    & .slide-title {
+      text-align: center;
+      margin-top: 10px;
     }
   }
 
