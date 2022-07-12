@@ -95,9 +95,9 @@ const Slider = function ({ width, height, autoPlay, autoPlayTime }) {
       >
         <Arrows />
         {
-          items.length && (
+          items.length ? (
             <Slide data={items[slide]} animation={animation} />
-          )
+          ) : null
         }
         <Dots />
       </SliderContext.Provider>

@@ -4,11 +4,11 @@ import SlideImage from "./SlideImage";
 
 import "./../styles.scss";
 
-export default function Slide({ data, animation }) {
+export default function Slide({ data: { url, title }, animation }) {
   return (
     <div className={`slide ${animation && 'fadeInAnimation'}`}>
-      <SlideImage src={data.url} alt={data.title} />
-      <SlideTitle title={data.title} />
+      <SlideImage src={url} alt={title} />
+      <SlideTitle title={title} />
     </div>
   );
 }
