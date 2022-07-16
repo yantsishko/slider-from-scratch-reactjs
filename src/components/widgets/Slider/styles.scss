@@ -5,11 +5,8 @@
   & .slide-list {
     display: flex;
     height: 100%;
-    transition: transform 0.5s ease-in-out;
-    width: 100%;
 
     & .slide {
-      flex: 1 0 100%;
       position: relative;
 
       & .slide-image {

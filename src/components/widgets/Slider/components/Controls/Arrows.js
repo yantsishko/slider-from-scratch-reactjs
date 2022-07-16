@@ -1,4 +1,5 @@
 import React, { useCallback, useContext } from "react";
+
 import { SliderContext } from "../../Slider";
 
 import "../../styles.scss";
