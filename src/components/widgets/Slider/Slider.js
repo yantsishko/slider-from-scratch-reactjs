@@ -12,6 +12,7 @@ export const SliderContext = createContext();
 const Slider = function ({ width, height, autoPlay, autoPlayTime }) {
   const [items, setItems] = useState([]);
   const [slide, setSlide] = useState(0);
+  const [touchPosition, setTouchPosition] = useState(null)
 
   useEffect(() => {
     const loadData = async () => {
@@ -37,6 +38,31 @@ const Slider = function ({ width, height, autoPlay, autoPlayTime }) {
     setSlide(number % items.length);
   };
 
+  const handleTouchStart = (e) => {
+    const touchDown = e.touches[0].clientX;
+
+    setTouchPosition(touchDown);
+  }
+
+  const handleTouchMove = (e) => {
+    if (touchPosition === null) {
+      return;
+    }
+
+    const currentPosition = e.touches[0].clientX;
+    const direction = touchPosition - currentPosition;
+
+    if (direction > 10) {
+      changeSlide(1);
+    }
+
+    if (direction < -10) {
+      changeSlide(-1);
+    }
+
+    setTouchPosition(null);
+  }
+
   useEffect(() => {
     if (!autoPlay) return;
 
@@ -50,7 +76,12 @@ const Slider = function ({ width, height, autoPlay, autoPlayTime }) {
   }, [items.length, slide]); // when images uploaded or slide changed manually we start timer
 
   return (
-    <div style={{ width, height }} className="slider">
+    <div
+      style={{ width, height }}
+      className="slider"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+    >
       <SliderContext.Provider
         value={{
           goToSlide,
