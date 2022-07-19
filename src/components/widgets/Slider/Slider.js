@@ -122,7 +122,7 @@ const Slider = function ({ width, height, autoPlay, autoPlayTime }) {
           width={getWidth() * itemsForRender.length}
           slideWidth={getWidth()}
         />
-        <Dots />
+        {/*<Dots />*/}
       </SliderContext.Provider>
     </div>
   );
